@@ -1,0 +1,22 @@
+-- Команды АПЛ 2026/2027 (20 команд)
+INSERT INTO teams (id, name, short_name, sort_order) VALUES
+('ARS', 'Arsenal', 'Arsenal', 1),
+('AVL', 'Aston Villa', 'Aston Villa', 2),
+('BOU', 'Bournemouth', 'Bournemouth', 3),
+('BRE', 'Brentford', 'Brentford', 4),
+('BHA', 'Brighton & Hove Albion', 'Brighton', 5),
+('CHE', 'Chelsea', 'Chelsea', 6),
+('COV', 'Coventry City', 'Coventry', 7),
+('CRY', 'Crystal Palace', 'Crystal Palace', 8),
+('EVE', 'Everton', 'Everton', 9),
+('FUL', 'Fulham', 'Fulham', 10),
+('HUL', 'Hull City', 'Hull', 11),
+('IPS', 'Ipswich Town', 'Ipswich', 12),
+('LEE', 'Leeds United', 'Leeds', 13),
+('LIV', 'Liverpool', 'Liverpool', 14),
+('MCI', 'Manchester City', 'Man City', 15),
+('MUN', 'Manchester United', 'Man United', 16),
+('NEW', 'Newcastle United', 'Newcastle', 17),
+('NFO', 'Nottingham Forest', 'Nott''m Forest', 18),
+('SUN', 'Sunderland', 'Sunderland', 19),
+('TOT', 'Tottenham Hotspur', 'Tottenham', 20);

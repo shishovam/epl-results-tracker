@@ -5,5 +5,4 @@ compatibility_date = "2024-09-23"
 [[d1_databases]]
 binding = "DB"
 database_name = "epl-tracker"
-# database_id — заполняется после выполнения `wrangler d1 create epl-tracker`
-database_id = ""
+database_id = "6823f6ac-62cf-4e11-ae03-3b8eff310d7c"

@@ -324,4 +324,58 @@ app.delete('/api/matches/:id', async (c) => {
   return c.json({ success: true, data: null });
 });
 
+app.get('/api/table', async (c) => {
+  const [{ results: teams }, { results: matches }] = await Promise.all([
+    c.env.DB.prepare('SELECT id, name FROM teams').all(),
+    c.env.DB.prepare('SELECT home_team_id, away_team_id, home_score, away_score FROM matches').all(),
+  ]);
+
+  // Инициализируем нулевую строку для каждой команды
+  const stats = new Map();
+  for (const team of teams) {
+    stats.set(team.id, {
+      team_id:        team.id,
+      team_name:      team.name,
+      played:         0,
+      won:            0,
+      drawn:          0,
+      lost:           0,
+      goals_for:      0,
+      goals_against:  0,
+    });
+  }
+
+  // Обходим матчи и обновляем статистику обеих команд
+  for (const m of matches) {
+    const home = stats.get(m.home_team_id);
+    const away = stats.get(m.away_team_id);
+    if (!home || !away) continue;
+
+    home.played++;      away.played++;
+    home.goals_for      += m.home_score;
+    home.goals_against  += m.away_score;
+    away.goals_for      += m.away_score;
+    away.goals_against  += m.home_score;
+
+    if (m.home_score > m.away_score)      { home.won++;   away.lost++;  }
+    else if (m.home_score < m.away_score) { away.won++;   home.lost++;  }
+    else                                  { home.drawn++; away.drawn++; }
+  }
+
+  // Добавляем производные поля и сортируем
+  const table = [...stats.values()]
+    .map((s) => ({ ...s, goal_difference: s.goals_for - s.goals_against, points: s.won * 3 + s.drawn }))
+    .sort((a, b) =>
+      (b.points          - a.points)          ||
+      (b.goal_difference - a.goal_difference) ||
+      (b.goals_for       - a.goals_for)       ||
+      a.team_name.localeCompare(b.team_name, 'en'),
+    );
+
+  // Расставляем позиции
+  table.forEach((row, i) => { row.position = i + 1; });
+
+  return c.json({ success: true, data: table });
+});
+
 export default app;
